@@ -1,20 +1,33 @@
 const express = require("express");
 const { createServer } = require("http");
 const { Server } = require("socket.io");
-
 const dotenv = require("dotenv");
+const cors = require("cors");
 
 dotenv.config();
 
 const app = express();
 const server = createServer(app);
+app.use(cors());
+
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 const PORT = process.env.PORT || 3000;
 const io = new Server(server, {
-  cors: true,
+  cors: {
+    origin: "*",
+    methods: ["GET", "POST"],
+    allowedHeaders: ["Content-Type"],
+    credentials: true,
+  },
 });
 
 const emailToSocketIdMap = new Map();
 const socketidToEmailMap = new Map();
+
+app.get("/", (req, res) => {
+  res.send("Server is running");
+});
 
 io.on("connection", (socket) => {
   console.log(`Socket Connected`, socket.id);
@@ -46,6 +59,6 @@ io.on("connection", (socket) => {
   });
 });
 
-server.listen(3000, () => {
+server.listen(PORT, () => {
   console.log(`Server listening on :${PORT}`);
 });

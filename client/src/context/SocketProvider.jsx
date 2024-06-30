@@ -12,8 +12,7 @@ const useSocket = () => {
 };
 
 const SocketProvider = ({ children }) => {
-  const port = import.meta.env.REACT_APP_SOCKET_PORT || 3000;
-  const socket = useMemo(() => io(`localhost:${port}`), [port]);
+  const socket = useMemo(() => io(`https://first-video-chat-webrtc.glitch.me`));
 
   return (
     <SocketContext.Provider value={socket}>{children}</SocketContext.Provider>
