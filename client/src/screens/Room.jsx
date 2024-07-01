@@ -29,17 +29,15 @@ const RoomPage = () => {
   }, [remoteSocketId, socket]);
 
   const handleEndCall = useCallback(() => {
-    // Clean up local streams
     if (myStream) {
       myStream.getTracks().forEach((track) => track.stop());
       setMyStream(null);
     }
     setRemoteStream(null);
 
-    // Notify the other participant to end the call
     socket.emit("call:end", { to: remoteSocketId });
 
-    setRemoteSocketId(null); // Reset remote socket ID
+    setRemoteSocketId(null); 
   }, [myStream, remoteSocketId, socket]);
 
   const handleIncommingCall = useCallback(
@@ -103,7 +101,7 @@ const RoomPage = () => {
       setMyStream(null);
     }
     setRemoteStream(null);
-    setRemoteSocketId(null); // Reset remote socket ID
+    setRemoteSocketId(null); 
   }, [myStream]);
 
   useEffect(() => {
@@ -127,7 +125,7 @@ const RoomPage = () => {
     socket.on("call:accepted", handleCallAccepted);
     socket.on("peer:nego:needed", handleNegoNeedIncomming);
     socket.on("peer:nego:final", handleNegoNeedFinal);
-    socket.on("call:end", handleRemoteEndCall); // Listen for call:end event
+    socket.on("call:end", handleRemoteEndCall); 
 
     return () => {
       socket.off("user:joined", handleUserJoined);
@@ -135,7 +133,7 @@ const RoomPage = () => {
       socket.off("call:accepted", handleCallAccepted);
       socket.off("peer:nego:needed", handleNegoNeedIncomming);
       socket.off("peer:nego:final", handleNegoNeedFinal);
-      socket.off("call:end", handleRemoteEndCall); // Clean up event listener
+      socket.off("call:end", handleRemoteEndCall); 
     };
   }, [
     socket,
