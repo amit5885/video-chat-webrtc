@@ -43,7 +43,7 @@ const LobbyScreen = () => {
         id="email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
-        style={{ fontSize: '1.2em' }}
+        style={{ fontSize: '1.5em' }}
       />
       <br />
       <label htmlFor="room" style={{ fontSize: '1.2em' }}>Room Number </label>
@@ -52,7 +52,7 @@ const LobbyScreen = () => {
         id="room"
         value={room}
         onChange={(e) => setRoom(e.target.value)}
-        style={{ fontSize: '1.2em' }}
+        style={{ fontSize: '1.5em' }}
       />
       <br />
       <button>Join</button>
