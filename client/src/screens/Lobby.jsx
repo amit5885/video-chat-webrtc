@@ -48,7 +48,7 @@ const LobbyScreen = () => {
           id="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          style={{ fontSize: "1.5em" }}
+          style={{ fontSize: "1.5em", marginBottom: ".5rem" }}
         />
         <br />
         <label htmlFor="room" style={{ fontSize: "1.5em" }}>
