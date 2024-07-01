@@ -12,6 +12,7 @@ const LobbyScreen = () => {
   const handleSubmitForm = useCallback(
     (e) => {
       e.preventDefault();
+      localStorage.setItem("email", email);
       socket.emit("room:join", { email, room });
     },
     [email, room, socket]
