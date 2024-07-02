@@ -207,7 +207,7 @@ const RoomPage = () => {
 
   return (
     <div style={{ padding: "20px" }}>
-      <h1>Room Page</h1>
+      <h1>Room</h1>
       <h4>
         {callEnded ? "Call Ended" : remoteSocketId ? "Connected" : "Wait"}
       </h4>
