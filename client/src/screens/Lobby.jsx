@@ -1,54 +1,40 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSocket } from "../context/SocketProvider";
 
 const LobbyScreen = () => {
-  const [email, setEmail] = useState("");
+  const [userID, setUserID] = useState("");
   const [room, setRoom] = useState("");
-
   const socket = useSocket();
   const navigate = useNavigate();
 
   const handleSubmitForm = useCallback(
     (e) => {
       e.preventDefault();
-      localStorage.setItem("email", email);
-      socket.emit("room:join", { email, room });
-    },
-    [email, room, socket]
-  );
-
-  const handleJoinRoom = useCallback(
-    (data) => {
-      const { email, room } = data;
+      localStorage.setItem("userId", userID);
+      socket.emit("room:join", { userID, room });
       navigate(`/room/${room}`);
     },
-    [navigate]
+    [userID, room, socket, navigate]
   );
 
-  useEffect(() => {
-    socket.on("room:join", handleJoinRoom);
-    return () => {
-      socket.off("room:join", handleJoinRoom);
-    };
-  }, [socket, handleJoinRoom]);
-
   return (
- <div>
+    <div>
       <h1>Lobby</h1>
       <form onSubmit={handleSubmitForm}>
         <label
-          htmlFor="email"
-          style={{ fontSize: "1.5em", marginRight: "4.5rem" }}
+          htmlFor="userID"
+          style={{ fontSize: "1.5em", marginRight: "3.5rem" }}
         >
-          Email ID{" "}
+          Username{" "}
         </label>
         <input
-          type="email"
-          id="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          type="text"
+          id="userID"
+          value={userID}
+          onChange={(e) => setUserID(e.target.value)}
           style={{ fontSize: "1.5em", marginBottom: ".5rem" }}
+          required
         />
         <br />
         <label htmlFor="room" style={{ fontSize: "1.5em" }}>
@@ -60,6 +46,7 @@ const LobbyScreen = () => {
           value={room}
           onChange={(e) => setRoom(e.target.value)}
           style={{ fontSize: "1.5em" }}
+          required
         />
         <br />
         <button>Join</button>

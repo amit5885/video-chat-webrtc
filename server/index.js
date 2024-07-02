@@ -22,8 +22,8 @@ const io = new Server(server, {
   },
 });
 
-const emailToSocketIdMap = new Map();
-const socketidToEmailMap = new Map();
+const userIdToSocketIdMap = new Map();
+const socketIdToUserIdMap = new Map();
 
 app.get("/", (req, res) => {
   res.send("Server is running");
@@ -31,11 +31,12 @@ app.get("/", (req, res) => {
 
 io.on("connection", (socket) => {
   console.log(`Socket Connected`, socket.id);
+
   socket.on("room:join", (data) => {
-    const { email, room } = data;
-    emailToSocketIdMap.set(email, socket.id);
-    socketidToEmailMap.set(socket.id, email);
-    io.to(room).emit("user:joined", { email, id: socket.id });
+    const { userId, room } = data;
+    userIdToSocketIdMap.set(userId, socket.id);
+    socketIdToUserIdMap.set(socket.id, userId);
+    io.to(room).emit("user:joined", { userId, id: socket.id });
     socket.join(room);
     io.to(socket.id).emit("room:join", data);
   });
@@ -58,7 +59,11 @@ io.on("connection", (socket) => {
     io.to(to).emit("peer:nego:final", { from: socket.id, ans });
   });
 
-    socket.on("call:end", ({ to }) => {
+  socket.on("message:send", ({ to, message, userId }) => {
+    io.to(to).emit("message:receive", { from: socket.id, message, userId });
+  });
+
+  socket.on("call:end", ({ to }) => {
     io.to(to).emit("call:end");
   });
 });
